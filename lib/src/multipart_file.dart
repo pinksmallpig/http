@@ -3,6 +3,7 @@
 // BSD-style license that can be found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:io';
 import 'dart:convert';
 
 import 'package:async/async.dart';
@@ -10,7 +11,6 @@ import 'package:http_parser/http_parser.dart';
 import 'package:path/path.dart' as path;
 
 import 'byte_stream.dart';
-import 'io.dart' as io;
 import 'utils.dart';
 
 /// A file to be uploaded as part of a [MultipartRequest]. This doesn't need to
@@ -88,9 +88,8 @@ class MultipartFile {
   /// This can only be used in an environment that supports "dart:io".
   static Future<MultipartFile> fromPath(String field, String filePath,
       {String filename, MediaType contentType}) async {
-    io.assertSupported("MultipartFile.fromPath");
     if (filename == null) filename = path.basename(filePath);
-    var file = io.newFile(filePath);
+    var file = new File(filePath);
     var length = await file.length();
     var stream = new ByteStream(DelegatingStream.typed(file.openRead()));
     return new MultipartFile(field, stream, length,

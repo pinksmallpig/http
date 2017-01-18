@@ -3,14 +3,19 @@
 A composable, Future-based library for making HTTP requests.
 
 This package contains a set of high-level functions and classes that make it
-easy to consume HTTP resources. It's platform-independent, and can be used on
-both the command-line and the browser. Currently the global utility functions
-are unsupported on the browser; see "Using on the Browser" below.
+easy to consume HTTP resources.
+
+**Note:** This is a Flutter-only fork of [the main `http` package][http] that
+doesn't provide browser support. It exists as a workaround for [issue 24581][],
+which will allow Dart libraries to support multiple platforms at once without
+using mirrors. It can only be installed in Flutter environments.
+
+[http]: https://pub.dartlang.org/packages/http
+[issue 24581]: https://github.com/dart-lang/sdk/issues/24581
 
 ## Using
 
-The easiest way to use this library is via the top-level functions, although
-they currently only work on platforms where `dart:io` is available. They allow
+The easiest way to use this library is via the top-level functions. They allow
 you to make individual HTTP requests with minimal hassle:
 
 ```dart
@@ -69,32 +74,3 @@ class UserAgentClient extends http.BaseClient {
   }
 }
 ```
-
-## Using on the Browser
-
-The HTTP library can be used on the browser via the [BrowserClient][] class in
-`package:http/browser_client.dart`. This client translates requests into
-XMLHttpRequests. For example:
-
-[BrowserClient]: https://www.dartdocs.org/documentation/http/latest/http.browser_client/BrowserClient-class.html
-
-```dart
-import 'dart:async';
-import 'package:http/browser_client.dart';
-
-main() async {
-  var client = new BrowserClient();
-  var url = '/whatsit/create';
-  var response =
-      await client.post(url, body: {'name': 'doodle', 'color': 'blue'});
-  print('Response status: ${response.statusCode}');
-  print('Response body: ${response.body}');
-}
-```
-
-## Filing issues
-
-Please file issues for the http package at [http://dartbug.com/new][bugs].
-
-[bugs]: http://dartbug.com/new
-[docs]: https://api.dartlang.org/docs/channels/dev/latest/http.html
