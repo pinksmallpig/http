@@ -22,8 +22,11 @@ class IOClient extends BaseClient {
   /// The underlying `dart:io` HTTP client.
   HttpClient _inner;
 
+  static bool _certificateCheck(X509Certificate cert, String host, int port) => true;
+
   /// Creates a new HTTP client.
-  IOClient([HttpClient inner]) : _inner = inner ?? new HttpClient();
+  IOClient([HttpClient inner]) : _inner = inner ?? new HttpClient()
+    ..badCertificateCallback = _certificateCheck;
 
   /// Sends an HTTP request and asynchronously returns the response.
   Future<StreamedResponse> send(BaseRequest request) async {
